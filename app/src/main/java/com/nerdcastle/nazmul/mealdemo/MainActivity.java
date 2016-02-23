@@ -2,8 +2,10 @@ package com.nerdcastle.nazmul.mealdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     String rate;
     String formattedDate;
     ListView lView;
+    ArrayList<String>countervalueList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,5 +149,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         AppController.getInstance().addToRequestQueue(requestToGetDateAndRate);
+    }
+
+    public void submit(View view){
+        countervalueList=getAllValues();
+        Toast.makeText(getBaseContext(),countervalueList.toString(),Toast.LENGTH_LONG).show();
+
+    }
+    public ArrayList<String> getAllValues() {
+        countervalueList=new ArrayList<>();
+        View parentView = null;
+        String number = "";
+        for (int i = 0; i < lView.getCount(); i++) {
+            parentView = getViewByPosition(i, lView);
+            number = ((TextView) parentView
+                    .findViewById(R.id.counter)).getText().toString();
+            countervalueList.add(number);
+
+        }
+        return countervalueList;
+        //setTotalAmount(String.valueOf(temp), String.valueOf(quan));
+
+    }
+
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition
+                + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
     }
 }
