@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     String formattedDate;
     ListView lView;
     ArrayList<String>countervalueList;
+    ArrayList<String>employeeList;
+    ArrayList<String>idList;
+    ArrayList<JSONObject>dataToBeSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,32 +43,6 @@ public class MainActivity extends AppCompatActivity {
         initialize();
         getDateAndRate();
         getAllEmployees();
-
-        /*//generate list
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("item1");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");
-        list.add("item2");*/
-
-      /*  //instantiate custom adapter
-        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
-
-        //handle listview and assign adapter
-        ListView lView = (ListView)findViewById(R.id.sampleList);
-        lView.setAdapter(adapter);*/
     }
 
     private void getAllEmployees() {
@@ -73,11 +50,14 @@ public class MainActivity extends AppCompatActivity {
         JsonArrayRequest requestToGetAllEmployees=new JsonArrayRequest(Request.Method.GET, urlToGetAllEmployees, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                ArrayList<String>employeeList=new ArrayList<>();
+                employeeList=new ArrayList<>();
+                idList=new ArrayList<>();
                 for(int i=0;i<response.length();i++){
                     try {
                         JSONObject employyeeObject=response.getJSONObject(i);
                         String employeeName=employyeeObject.getString("Name");
+                        String employeeId=employyeeObject.getString("Id");
+                        idList.add(employeeId);
                         employeeList.add(employeeName);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -151,9 +131,18 @@ public class MainActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(requestToGetDateAndRate);
     }
 
-    public void submit(View view){
+    public void submit(View view) throws JSONException {
         countervalueList=getAllValues();
-        Toast.makeText(getBaseContext(),countervalueList.toString(),Toast.LENGTH_LONG).show();
+        dataToBeSend=new ArrayList<>();
+
+        for(int i=0;i<countervalueList.size();i++){
+            JSONObject everyEmployeeData=new JSONObject();
+            everyEmployeeData.put("EmployeeId",idList.get(i));
+            everyEmployeeData.put("NumberOfMeal",countervalueList.get(i));
+            dataToBeSend.add(everyEmployeeData);
+        }
+
+        Toast.makeText(getBaseContext(), dataToBeSend.toString(),Toast.LENGTH_LONG).show();
 
     }
     public ArrayList<String> getAllValues() {
@@ -164,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
             parentView = getViewByPosition(i, lView);
             number = ((TextView) parentView
                     .findViewById(R.id.counter)).getText().toString();
+
             countervalueList.add(number);
 
         }
         return countervalueList;
-        //setTotalAmount(String.valueOf(temp), String.valueOf(quan));
 
     }
 
