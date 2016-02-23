@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MealSubmissionActivity extends AppCompatActivity {
     TextView dayTV;
     TextView dateTV;
     TextView rateTV;
@@ -31,32 +31,32 @@ public class MainActivity extends AppCompatActivity {
     String rate;
     String formattedDate;
     ListView lView;
-    ArrayList<String>countervalueList;
-    ArrayList<String>employeeList;
-    ArrayList<String>idList;
-    ArrayList<JSONObject>dataToBeSend;
+    ArrayList<String> countervalueList;
+    ArrayList<String> employeeList;
+    ArrayList<String> idList;
+    JSONArray dataToBeSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_meal_submission);
         initialize();
         getDateAndRate();
         getAllEmployees();
     }
 
     private void getAllEmployees() {
-        String urlToGetAllEmployees="http://dotnet.nerdcastlebd.com/meal/api/meal/GetAllEmployees";
-        JsonArrayRequest requestToGetAllEmployees=new JsonArrayRequest(Request.Method.GET, urlToGetAllEmployees, new Response.Listener<JSONArray>() {
+        String urlToGetAllEmployees = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetAllEmployees";
+        JsonArrayRequest requestToGetAllEmployees = new JsonArrayRequest(Request.Method.GET, urlToGetAllEmployees, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                employeeList=new ArrayList<>();
-                idList=new ArrayList<>();
-                for(int i=0;i<response.length();i++){
+                employeeList = new ArrayList<>();
+                idList = new ArrayList<>();
+                for (int i = 0; i < response.length(); i++) {
                     try {
-                        JSONObject employyeeObject=response.getJSONObject(i);
-                        String employeeName=employyeeObject.getString("Name");
-                        String employeeId=employyeeObject.getString("Id");
+                        JSONObject employyeeObject = response.getJSONObject(i);
+                        String employeeName = employyeeObject.getString("Name");
+                        String employeeId = employyeeObject.getString("Id");
                         idList.add(employeeId);
                         employeeList.add(employeeName);
                     } catch (JSONException e) {
@@ -80,13 +80,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        dayTV= (TextView) findViewById(R.id.dayTV);
-        dateTV= (TextView) findViewById(R.id.dateTV);
-        rateTV= (TextView) findViewById(R.id.rateTV);
-        lView = (ListView)findViewById(R.id.sampleList);
+        dayTV = (TextView) findViewById(R.id.dayTV);
+        dateTV = (TextView) findViewById(R.id.dateTV);
+        rateTV = (TextView) findViewById(R.id.rateTV);
+        lView = (ListView) findViewById(R.id.sampleList);
 
     }
-    public String dateFormatterforLukka(String date){
+
+    public String dateFormatterforLukka(String date) {
         String inputDate = date;
         String inputFormat = "MM/dd/yyyy";
         String outputFormat = "d ' ' MMMM ' ' yyyy";
@@ -105,18 +106,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getDateAndRate() {
-        String urltoGetDateAndRate="http://dotnet.nerdcastlebd.com/meal/api/meal/GetDateAndRate";
-        JsonObjectRequest requestToGetDateAndRate=new JsonObjectRequest(Request.Method.GET, urltoGetDateAndRate, new Response.Listener<JSONObject>() {
+        String urltoGetDateAndRate = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetDateAndRate";
+        JsonObjectRequest requestToGetDateAndRate = new JsonObjectRequest(Request.Method.GET, urltoGetDateAndRate, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    day=response.getString("Day");
-                    date=response.getString("Date");
-                    rate=response.getString("Rate");
-                    formattedDate=dateFormatterforLukka(date);
+                    day = response.getString("Day");
+                    date = response.getString("Date");
+                    rate = response.getString("Rate");
+                    formattedDate = dateFormatterforLukka(date);
                     dayTV.setText(day);
                     dateTV.setText(formattedDate);
-                    rateTV.setText("Rate: "+rate+" tk");
+                    rateTV.setText("Rate: " + rate + " tk");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -132,21 +133,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submit(View view) throws JSONException {
-        countervalueList=getAllValues();
-        dataToBeSend=new ArrayList<>();
+        countervalueList = getAllValues();
+        dataToBeSend = new JSONArray();
 
-        for(int i=0;i<countervalueList.size();i++){
-            JSONObject everyEmployeeData=new JSONObject();
-            everyEmployeeData.put("EmployeeId",idList.get(i));
-            everyEmployeeData.put("NumberOfMeal",countervalueList.get(i));
-            dataToBeSend.add(everyEmployeeData);
+
+        for (int i = 0; i < countervalueList.size(); i++) {
+            JSONObject everyEmployeeData = new JSONObject();
+            everyEmployeeData.put("EmployeeId", idList.get(i));
+            everyEmployeeData.put("NumberOfMeal", countervalueList.get(i));
+            dataToBeSend.put(everyEmployeeData);
         }
+       //submitData(dataToBeSend);
+        String urlToSubmitData = "http://dotnet.nerdcastlebd.com/meal/api/meal/PostDailyBill";
+        final JsonArrayRequest requestToSubmitData=new JsonArrayRequest(Request.Method.POST, urlToSubmitData, dataToBeSend, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
 
-        Toast.makeText(getBaseContext(), dataToBeSend.toString(),Toast.LENGTH_LONG).show();
+                try {
+                    boolean data=response.getJSONObject(0).getBoolean("ResultState");
+                    if(data){
+                        Toast.makeText(getBaseContext(),"Succesfully Saved",Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(),error.toString(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+        AppController.getInstance().addToRequestQueue(requestToSubmitData);
+
+        Toast.makeText(getBaseContext(), dataToBeSend.toString(), Toast.LENGTH_LONG).show();
 
     }
+
+    public void submitData(JSONArray dataToBeSend) {
+        String urlToSubmitData = "dotnet.nerdcastlebd.com/meal/api/meal/PostDailyBill";
+        JsonArrayRequest requestToSubmitData=new JsonArrayRequest(Request.Method.POST, urlToSubmitData, dataToBeSend, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String data=response.toString();
+                //Toast.makeText(getBaseContext(),data,Toast.LENGTH_LONG).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        AppController.getInstance().addToRequestQueue(requestToSubmitData);
+    }
+
     public ArrayList<String> getAllValues() {
-        countervalueList=new ArrayList<>();
+        countervalueList = new ArrayList<>();
         View parentView = null;
         String number = "";
         for (int i = 0; i < lView.getCount(); i++) {

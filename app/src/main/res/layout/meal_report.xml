@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Month:" />
+
+        <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/month"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".8"
+            android:background="@color/colorPrimary"></Spinner>
+
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".6"
+            android:onClick="getData"
+            android:text="get data" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Year:" />
+
+        <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/year"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".8"
+            android:background="@color/colorPrimary"></Spinner>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".6" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <TextView
+            android:id="@+id/nameTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="name" />
+        <TextView
+            android:id="@+id/totalTV"
+            android:layout_width="0dp"
+            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="total amount" />
+
+        <TextView
+            android:id="@+id/selfAmountTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="self amount" />
+
+        <TextView
+            android:id="@+id/officeAmountTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="office amount" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/totalReportListView"
+        android:layout_width="match_parent"
+        android:layout_weight="9"
+        android:layout_height="0dp"></ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_height="0dp">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="save as pdf"/>
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/totalAmountTV"
+            android:layout_weight="1"
+            android:text="total amount"
+            android:layout_gravity="right"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</LinearLayout>
