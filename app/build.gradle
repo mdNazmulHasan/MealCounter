@@ -26,4 +26,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.supervital:swipenumberpicker:1.0.3'
     compile files('libs/itextpdf-5.5.8.jar')
+    compile 'com.victor.ringbutton:lib:1.0.1'
 }

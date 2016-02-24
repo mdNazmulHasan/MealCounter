@@ -43,7 +43,6 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
     @Override
     public long getItemId(int pos) {
         return 0;
-        //just return 0 if your list items do not have an Id variable.
     }
 
     @Override
@@ -54,15 +53,14 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.custom_row_for_report, null);
         }
 
-        //Handle TextView and display string from your list
         TextView nameTV = (TextView)view.findViewById(R.id.nameTV);
         TextView selfAmountTV = (TextView)view.findViewById(R.id.selfAmountTV);
         TextView officeAmountTV = (TextView)view.findViewById(R.id.officeAmountTV);
         TextView totalTV = (TextView)view.findViewById(R.id.totalTV);
         nameTV.setText(nameList.get(position));
-        selfAmountTV.setText(selfAmountList.get(position)+" tk");
-        totalTV.setText(totalAmountList.get(position)+" tk");
-        officeAmountTV.setText(officeAmountList.get(position)+" tk");
+        selfAmountTV.setText(selfAmountList.get(position));
+        totalTV.setText(totalAmountList.get(position));
+        officeAmountTV.setText(officeAmountList.get(position));
         return view;
     }
 }

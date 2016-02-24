@@ -1,14 +1,19 @@
 package com.nerdcastle.nazmul.mealdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -44,6 +49,24 @@ public class MealSubmissionActivity extends AppCompatActivity {
         getDateAndRate();
         getAllEmployees();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_for_order, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.report:
+                Intent intent = new Intent(getApplicationContext(),
+                        ReportActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void getAllEmployees() {
         String urlToGetAllEmployees = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetAllEmployees";
@@ -73,6 +96,14 @@ public class MealSubmissionActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(error instanceof TimeoutError) {
+                    String msg = "Request Timed Out, Pls try again";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
+                else if(error instanceof NoConnectionError) {
+                    String msg = "No internet Access, Check your internet connection.";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -164,32 +195,21 @@ public class MealSubmissionActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),error.toString(),Toast.LENGTH_LONG).show();
+                if(error instanceof TimeoutError) {
+                    String msg = "Request Timed Out, Pls try again";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
+                else if(error instanceof NoConnectionError) {
+                    String msg = "No internet Access, Check your internet connection.";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
 
             }
         });
         AppController.getInstance().addToRequestQueue(requestToSubmitData);
 
-        Toast.makeText(getBaseContext(), dataToBeSend.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), dataToBeSend.toString(), Toast.LENGTH_LONG).show();
 
-    }
-
-    public void submitData(JSONArray dataToBeSend) {
-        String urlToSubmitData = "dotnet.nerdcastlebd.com/meal/api/meal/PostDailyBill";
-        JsonArrayRequest requestToSubmitData=new JsonArrayRequest(Request.Method.POST, urlToSubmitData, dataToBeSend, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String data=response.toString();
-                //Toast.makeText(getBaseContext(),data,Toast.LENGTH_LONG).show();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        AppController.getInstance().addToRequestQueue(requestToSubmitData);
     }
 
     public ArrayList<String> getAllValues() {

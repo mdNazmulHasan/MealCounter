@@ -1,8 +1,11 @@
 package com.nerdcastle.nazmul.mealdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -10,8 +13,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -20,11 +25,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -56,11 +58,31 @@ public class ReportActivity extends AppCompatActivity {
             Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.COURIER, 16,
             Font.BOLD);
+    private static Font miniBold = new Font(Font.FontFamily.COURIER, 12,
+            Font.NORMAL);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_report);
         initialize();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_for_resource, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.dashboard:
+                Intent intent = new Intent(getApplicationContext(),
+                        MealSubmissionActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     public void initialize() {
         totalAmountTV= (TextView) findViewById(R.id.totalAmountTV);
@@ -96,7 +118,7 @@ public class ReportActivity extends AppCompatActivity {
         int selectedMonthAmount=spinnerMonth.getSelectedItemPosition()+1;
         mnthSelected=spinnerMonth.getSelectedItem().toString();
         String selectedMonth=String.valueOf(selectedMonthAmount);
-        Toast.makeText(getBaseContext(), selectedMonth, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), selectedMonth, Toast.LENGTH_LONG).show();
         getTotalAmount(selectedMonth, selectedYear);
         getReport(selectedMonth, selectedYear);
     }
@@ -128,11 +150,19 @@ public class ReportActivity extends AppCompatActivity {
                 }
                 AdapterForReport adapterForReport=new AdapterForReport(nameList,totalAmountList,selfAmountList,officeAmountList,getBaseContext());
                 reportList.setAdapter(adapterForReport);
-                Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(error instanceof TimeoutError) {
+                    String msg = "Request Timed Out, Pls try again";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
+                else if(error instanceof NoConnectionError) {
+                    String msg = "No internet Access, Check your internet connection.";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -150,6 +180,14 @@ public class ReportActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(error instanceof TimeoutError) {
+                    String msg = "Request Timed Out, Pls try again";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
+                else if(error instanceof NoConnectionError) {
+                    String msg = "No internet Access, Check your internet connection.";
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -201,7 +239,7 @@ public class ReportActivity extends AppCompatActivity {
         addEmptyLine(preface, 1);
         // Will create: Report generated by: _name, _date
         preface.add(new Paragraph("Report generated On: " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                smallBold));
+                miniBold));
 
 
         document.add(preface);
@@ -212,12 +250,6 @@ public class ReportActivity extends AppCompatActivity {
     private static void createTable(Paragraph preface, ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList)
             throws BadElementException {
         PdfPTable table = new PdfPTable(4);
-
-        // t.setBorderColor(BaseColor.GRAY);
-        // t.setPadding(4);
-        // t.setSpacing(4);
-        // t.setBorderWidth(1);
-
         PdfPCell c1 = new PdfPCell(new Phrase("Employee Name"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
@@ -239,24 +271,9 @@ public class ReportActivity extends AppCompatActivity {
             table.addCell(selfAmountList.get(i));
             table.addCell(officeAmountList.get(i));
         }
-
-       /* table.addCell("1.0");
-        table.addCell("1.1");
-        table.addCell("1.2");
-        table.addCell("2.1");
-        table.addCell("2.2");
-        table.addCell("2.3");*/
-
         preface.add(table);
+    }
 
-    }
-    private static void createList(Section subCatPart) {
-        List list = new List(true, false, 10);
-        list.add(new ListItem("First point"));
-        list.add(new ListItem("Second point"));
-        list.add(new ListItem("Third point"));
-        subCatPart.add(list);
-    }
     private static void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
