@@ -11,15 +11,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".3"
             android:textColor="#000000"
-            android:text="Month:" />
+            android:text="Month" />
 
         <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/month"
@@ -28,14 +28,13 @@
             android:layout_weight=".8"
             android:background="#0cf270"></Spinner>
 
-
-
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".6"
             android:onClick="getData"
-            android:text="get data" />
+            android:gravity="left"
+            android:text="Get Data" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,9 +44,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".3"
             android:textColor="#000000"
-            android:text="Year:" />
+            android:text="Year" />
 
         <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/year"
@@ -63,7 +62,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="1.5"
+        android:layout_weight="2"
         android:layout_height="0dp">
         <TextView
             android:id="@+id/nameTV"
@@ -101,11 +100,11 @@
     <ListView
         android:id="@+id/totalReportListView"
         android:layout_width="match_parent"
-        android:layout_weight="9"
+        android:layout_weight="8"
         android:layout_height="0dp"></ListView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:orientation="horizontal"
         android:layout_height="0dp">
         <Button

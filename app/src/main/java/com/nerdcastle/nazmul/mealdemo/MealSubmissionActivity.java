@@ -63,6 +63,11 @@ public class MealSubmissionActivity extends AppCompatActivity {
                         ReportActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.reload:
+                Intent reloadIntent = new Intent(getApplicationContext(),
+                        MealSubmissionActivity.class);
+                startActivity(reloadIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -121,7 +126,7 @@ public class MealSubmissionActivity extends AppCompatActivity {
     public String dateFormatterforLukka(String date) {
         String inputDate = date;
         String inputFormat = "MM/dd/yyyy";
-        String outputFormat = "d ' ' MMMM ' ' yyyy";
+        String outputFormat = "d' ' MMMM ' ' yyyy";
 
         Date parsed = null;
         String outputDate = "";
@@ -181,10 +186,9 @@ public class MealSubmissionActivity extends AppCompatActivity {
             public void onResponse(JSONArray response) {
 
                 try {
-                    boolean data=response.getJSONObject(0).getBoolean("ResultState");
-                    if(data){
-                        Toast.makeText(getBaseContext(),"Succesfully Saved",Toast.LENGTH_LONG).show();
-                    }
+                    String reply=response.getJSONObject(0).getString("Message");
+                        Toast.makeText(getBaseContext(),reply,Toast.LENGTH_LONG).show();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

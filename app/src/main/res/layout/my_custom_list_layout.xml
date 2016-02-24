@@ -6,36 +6,37 @@
     <TextView
         android:id="@+id/list_item_string"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_weight="3"
         android:paddingLeft="8dp"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/delete_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_weight=".5"
         android:layout_marginRight="5dp"
         android:text="-" />
     <TextView
         android:id="@+id/counter"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="0"
         android:layout_weight=".5"
         android:gravity="center"
         android:paddingLeft="8dp"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold"
        />
 
     <Button
         android:id="@+id/add_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".5"
+        android:layout_height="40dp"
+        android:layout_weight=".6"
+        android:gravity="left"
         android:text="+"
         android:layout_alignTop="@+id/delete_btn"
         android:layout_centerHorizontal="true" />
