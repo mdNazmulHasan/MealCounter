@@ -47,7 +47,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.my_custom_list_layout, null);
+            view = inflater.inflate(R.layout.custom_row_for_meal_submission, null);
         }
 
         //Handle TextView and display string from your list

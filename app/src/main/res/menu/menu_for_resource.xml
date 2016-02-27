@@ -5,6 +5,17 @@
         android:id="@+id/dashboard"
         android:orderInCategory="100"
         android:title="Home"
+        android:icon="@drawable/home"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/emailReport"
+        android:orderInCategory="100"
+        android:title="Email"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/showReport"
+        android:orderInCategory="100"
+        android:title="Show Report"
+        app:showAsAction="never" />
 
 </menu>

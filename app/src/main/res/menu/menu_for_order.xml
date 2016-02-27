@@ -5,11 +5,13 @@
         android:id="@+id/report"
         android:orderInCategory="100"
         android:title="Report"
+        android:icon="@drawable/report_icon"
         app:showAsAction="always" />
     <item
         android:id="@+id/reload"
         android:orderInCategory="100"
         android:title="Reload"
+        android:icon="@drawable/refresh"
         app:showAsAction="always" />
 
 </menu>

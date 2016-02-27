@@ -1,6 +1,7 @@
 package com.nerdcastle.nazmul.mealdemo;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,22 @@ public class ReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),
                         MealSubmissionActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.emailReport:
+
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "MealManagementApp/MonthlyReport.pdf"));
+                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                emailIntent.setType("message/rfc822");
+                startActivity(emailIntent);
+                return true;
+
+            case R.id.showReport:
+                Intent showIntent = new Intent(Intent.ACTION_VIEW);
+                Uri readUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "MealManagementApp/MonthlyReport.pdf"));
+                showIntent.setDataAndType(readUri,"application/pdf");
+                showIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(showIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
