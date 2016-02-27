@@ -39,7 +39,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Nazmul on 2/23/2016.
@@ -52,7 +51,8 @@ public class ReportActivity extends AppCompatActivity {
     ArrayList<String>selfAmountList;
     ArrayList<String>officeAmountList;
     ArrayList<String>totalAmountList;
-    String mnthSelected;
+    String monthSelected;
+    String deviceCurrentDateTime;
     String totalOfficePayable;
     ListView reportList;
     private static Font catFont = new Font(Font.FontFamily.COURIER, 20,
@@ -82,20 +82,22 @@ public class ReportActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.emailReport:
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("message/rfc822");
+                    startActivity(emailIntent);
 
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "MealManagementApp/MonthlyReport.pdf"));
-                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                emailIntent.setType("message/rfc822");
-                startActivity(emailIntent);
                 return true;
 
             case R.id.showReport:
-                Intent showIntent = new Intent(Intent.ACTION_VIEW);
-                Uri readUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "MealManagementApp/MonthlyReport.pdf"));
-                showIntent.setDataAndType(readUri,"application/pdf");
-                showIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(showIntent);
+                try{
+                    Uri readUri = Uri.parse(Environment.getExternalStorageDirectory() + "/MealManagementApp/");
+                    Intent readIntent = new Intent(Intent.ACTION_VIEW);
+                    readIntent.setDataAndType(readUri, "resource/folder");
+                    startActivity(readIntent);
+                }catch (Exception e){
+                    Toast.makeText(getBaseContext(),"Your file explorer not working properly!Download ES file explorer",Toast.LENGTH_LONG).show();
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -133,9 +135,8 @@ public class ReportActivity extends AppCompatActivity {
     public void getData(View view){
         String selectedYear=String.valueOf(spinnerYear.getSelectedItem());
         int selectedMonthAmount=spinnerMonth.getSelectedItemPosition()+1;
-        mnthSelected=spinnerMonth.getSelectedItem().toString();
+        monthSelected =spinnerMonth.getSelectedItem().toString();
         String selectedMonth=String.valueOf(selectedMonthAmount);
-        //Toast.makeText(getBaseContext(), selectedMonth, Toast.LENGTH_LONG).show();
         getTotalAmount(selectedMonth, selectedYear);
         getReport(selectedMonth, selectedYear);
     }
@@ -211,23 +212,28 @@ public class ReportActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(requestToGetTotalAmount);
     }
     public void createPdf(View view){
+        generatePdf();
+    }
+
+    private void generatePdf() {
         try{
             Document document = new Document();
             String root = Environment.getExternalStorageDirectory().toString();
+            deviceCurrentDateTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             File myDir = new File(root + "/MealManagementApp");
             myDir.mkdirs();
-            String fname = "MonthlyReport.pdf";
+            String fname = "Monthly Report of "+ monthSelected +"_"+ deviceCurrentDateTime +".pdf";
             File file = new File (myDir, fname);
-            //FileOutputStream out = new FileOutputStream(file);
             PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
             addMetaData(document);
-            addTitlePage(document, totalOfficePayable, mnthSelected, nameList, totalAmountList, selfAmountList, officeAmountList);
+            addTitlePage(document, deviceCurrentDateTime,totalOfficePayable, monthSelected, nameList, totalAmountList, selfAmountList, officeAmountList);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private static void addMetaData(Document document) {
         document.addTitle("Monthly Meal Report");
         document.addSubject("Using iText");
@@ -235,7 +241,7 @@ public class ReportActivity extends AppCompatActivity {
         document.addAuthor("Nazmul Hasan");
         document.addCreator("Nazmul Hasan");
     }
-    private static void addTitlePage(Document document, String totalOfficePayable, String mnthSelected, ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList)
+    private static void addTitlePage(Document document, String deviceCurrentDateTime, String totalOfficePayable, String mnthSelected, ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList)
             throws DocumentException {
         Paragraph preface = new Paragraph();
         // We add one empty line
@@ -255,7 +261,7 @@ public class ReportActivity extends AppCompatActivity {
 
         addEmptyLine(preface, 1);
         // Will create: Report generated by: _name, _date
-        preface.add(new Paragraph("Report generated On: " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        preface.add(new Paragraph("Report generated On: " +deviceCurrentDateTime, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 miniBold));
 
 
