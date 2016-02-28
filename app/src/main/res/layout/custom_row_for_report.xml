@@ -9,27 +9,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="name" />
+        android:text="@string/name" />
     <TextView
         android:id="@+id/totalTV"
         android:layout_width="0dp"
         android:paddingLeft="10dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="total amount" />
+        android:text="@string/total_amount" />
 
     <TextView
         android:id="@+id/selfAmountTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="self amount" />
+        android:text="@string/self_amount" />
 
     <TextView
         android:id="@+id/officeAmountTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="office amount" />
+        android:text="@string/office_amount" />
 
 </LinearLayout>

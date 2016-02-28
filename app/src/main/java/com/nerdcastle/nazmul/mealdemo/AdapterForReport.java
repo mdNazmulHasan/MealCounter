@@ -21,8 +21,7 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
     private Context context;
 
 
-
-    public AdapterForReport(ArrayList<String> nameList,ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList, Context context) {
+    public AdapterForReport(ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList, Context context) {
         this.nameList = nameList;
         this.selfAmountList = selfAmountList;
         this.officeAmountList = officeAmountList;
@@ -45,22 +44,35 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
         return 0;
     }
 
+    private static class ViewHolder {
+        public TextView nameTV;
+        public TextView selfAmountTV;
+        public TextView officeAmountTV;
+        public TextView totalTV;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        ViewHolder holder;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.custom_row_for_report, null);
-        }
+            holder = new ViewHolder();
 
-        TextView nameTV = (TextView)view.findViewById(R.id.nameTV);
-        TextView selfAmountTV = (TextView)view.findViewById(R.id.selfAmountTV);
-        TextView officeAmountTV = (TextView)view.findViewById(R.id.officeAmountTV);
-        TextView totalTV = (TextView)view.findViewById(R.id.totalTV);
-        nameTV.setText(nameList.get(position));
-        selfAmountTV.setText(selfAmountList.get(position));
-        totalTV.setText(totalAmountList.get(position));
-        officeAmountTV.setText(officeAmountList.get(position));
+            holder.nameTV = (TextView) view.findViewById(R.id.nameTV);
+            holder.selfAmountTV = (TextView) view.findViewById(R.id.selfAmountTV);
+            holder.officeAmountTV = (TextView) view.findViewById(R.id.officeAmountTV);
+            holder.totalTV = (TextView) view.findViewById(R.id.totalTV);
+            view.setTag(holder);
+
+        } else {
+            holder = (ViewHolder) view.getTag();
+        }
+        holder.nameTV.setText(nameList.get(position));
+        holder.selfAmountTV.setText(selfAmountList.get(position));
+        holder.totalTV.setText(totalAmountList.get(position));
+        holder.officeAmountTV.setText(officeAmountList.get(position));
         return view;
     }
 }

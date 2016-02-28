@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -19,10 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_weight=".3"
             android:textColor="#000000"
-            android:text="Month" />
+            android:text="@string/month" />
 
         <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/month"
+            android:id="@+id/monthSpinner"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight=".8"
@@ -33,8 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_weight=".6"
             android:onClick="getData"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorPrimary"
             android:gravity="left"
-            android:text="Get Data" />
+            android:text="@string/sync" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,10 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_weight=".3"
             android:textColor="#000000"
-            android:text="Year" />
+            android:text="@string/year" />
 
         <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/year"
+            android:id="@+id/yearSpinner"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight=".8"
@@ -70,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="#000000"
-            android:text="Name" />
+            android:text="@string/name" />
         <TextView
             android:id="@+id/totalTV"
             android:layout_width="0dp"
@@ -78,7 +84,7 @@
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Total amount (BDT)" />
+            android:text="@string/total_amount" />
 
         <TextView
             android:id="@+id/selfAmountTV"
@@ -86,7 +92,7 @@
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Self Payable (BDT)" />
+            android:text="@string/self_amount" />
 
         <TextView
             android:id="@+id/officeAmountTV"
@@ -94,7 +100,7 @@
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Office allowance (BDT)" />
+            android:text="@string/office_amount" />
     </LinearLayout>
 
     <ListView
@@ -112,12 +118,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="createPdf"
-            android:text="save as pdf"/>
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:background="@color/colorPrimary"
+            android:text="@string/save_pdf"/>
         <TextView
             android:layout_width="0dp"
             android:id="@+id/totalAmountTV"
             android:layout_weight="1"
-            android:text="total amount"
+            android:text="@string/total_office_payable"
             android:layout_gravity="right"
             android:layout_height="wrap_content" />
     </LinearLayout>

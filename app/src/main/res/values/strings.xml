@@ -1,5 +1,23 @@
 <resources>
     <string name="app_name">Meal Counter</string>
+    <string name="day">Day</string>
+    <string name="date">Date</string>
+    <string name="rate">Rate</string>
+    <string name="submit">submit</string>
+    <string name="minus">-</string>
+    <string name="zero">0</string>
+    <string name="add">+</string>
+    <string name="name">Employee Name</string>
+    <string name="total_amount">Total amount (BDT)</string>
+    <string name="self_amount">Self Payable (BDT)</string>
+    <string name="office_amount">Office allowance (BDT)</string>
+    <string name="month">Month</string>
+    <string name="sync">Get Data</string>
+    <string name="year">Year</string>
+    <string name="save_pdf">save as pdf</string>
+    <string name="total_office_payable">total amount</string>
+    <string name="report">Report</string>
+    <string name="reload">Reload</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>
