@@ -38,20 +38,26 @@ public class MealSubmissionActivity extends AppCompatActivity {
     ListView mealSubmissionLV;
     ArrayList<String> countervalueList;
     ArrayList<String> employeeNameList;
+    ArrayList<String> quantityList;
     ArrayList<String> idList;
     JSONArray dataToBeSend;
     String urlToGetAllEmployees;
     String urltoGetDateAndRate;
     String urlToSubmitData;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_submission);
+        token=getIntent().getStringExtra("Token");
+        Toast.makeText(getApplication(),token,Toast.LENGTH_LONG).show();
         initialize();
         getDateAndRate();
         getAllEmployees();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,19 +90,22 @@ public class MealSubmissionActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 employeeNameList = new ArrayList<>();
+                quantityList = new ArrayList<>();
                 idList = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject employeeObject = response.getJSONObject(i);
                         String employeeName = employeeObject.getString("Name");
                         String employeeId = employeeObject.getString("Id");
+                        String quantity = employeeObject.getString("Quantity");
                         idList.add(employeeId);
                         employeeNameList.add(employeeName);
+                        quantityList.add(quantity);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList, getBaseContext());
+                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList,quantityList,getBaseContext());
                 mealSubmissionLV.setAdapter(adapterForMealSubmission);
 
             }
@@ -110,7 +119,6 @@ public class MealSubmissionActivity extends AppCompatActivity {
                     String msg = "No internet Access, Check your internet connection.";
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 }
-
             }
         });
         AppController.getInstance().addToRequestQueue(requestToGetAllEmployees);
@@ -177,8 +185,10 @@ public class MealSubmissionActivity extends AppCompatActivity {
             JSONObject everyEmployeeData = new JSONObject();
             everyEmployeeData.put("EmployeeId", idList.get(i));
             everyEmployeeData.put("NumberOfMeal", countervalueList.get(i));
+            everyEmployeeData.put("Token", token);
             dataToBeSend.put(everyEmployeeData);
         }
+        System.out.print(dataToBeSend.toString());
         mealDataSubmit();
     }
 

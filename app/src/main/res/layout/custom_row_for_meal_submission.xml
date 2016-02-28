@@ -28,7 +28,7 @@
         android:id="@+id/counterTV"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:text="@string/zero"
+        android:text="0"
         android:textColor="#D1512F"
         android:layout_weight=".5"
         android:gravity="center"

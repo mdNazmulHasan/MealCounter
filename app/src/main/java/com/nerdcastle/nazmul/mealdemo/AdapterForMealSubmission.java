@@ -16,12 +16,14 @@ import java.util.ArrayList;
  */
 public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter {
     private ArrayList<String> employeeNameList = new ArrayList<String>();
+    private ArrayList<String> quantityList = new ArrayList<String>();
     private Context context;
     int count = 0;
 
 
-    public AdapterForMealSubmission(ArrayList<String> employeeNameList, Context context) {
+    public AdapterForMealSubmission(ArrayList<String> employeeNameList, ArrayList<String> quantityList, Context context) {
         this.employeeNameList = employeeNameList;
+        this.quantityList = quantityList;
         this.context = context;
     }
 
@@ -64,6 +66,7 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
             holder = (ViewHolder) view.getTag();
         }
         holder.nameTV.setText(employeeNameList.get(position));
+        holder.mealCounterTV.setText(quantityList.get(position));
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +75,7 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                     count--;
                 }
                 holder.mealCounterTV.setText(String.valueOf(count));
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
             }
         });
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +84,7 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                 count = Integer.parseInt(holder.mealCounterTV.getText().toString());
                 count++;
                 holder.mealCounterTV.setText(String.valueOf(count));
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
             }
         });
 
