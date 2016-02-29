@@ -52,6 +52,7 @@
         android:layout_weight=".3"
         android:onClick="submit"
         android:textStyle="bold"
+        android:id="@+id/submitBtn"
         android:textColor="#ffffff"
         android:background="@color/colorPrimary"
         android:layout_gravity="bottom|center"

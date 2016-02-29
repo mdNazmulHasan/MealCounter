@@ -1,6 +1,7 @@
 package com.nerdcastle.nazmul.mealdemo;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,12 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        if((Integer.parseInt(quantityList.get(position))>0)){
+            holder.mealCounterTV.setTextColor(Color.BLUE);
+        }
+        else if((Integer.parseInt(quantityList.get(position)))==0){
+            holder.mealCounterTV.setTextColor(Color.RED);
+        }
         holder.nameTV.setText(employeeNameList.get(position));
         holder.mealCounterTV.setText(quantityList.get(position));
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +85,12 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                     quantityList.set(position, String.valueOf(count));
                 }
                 holder.mealCounterTV.setText(quantityList.get(position));
+                if((Integer.parseInt(quantityList.get(position))>0)){
+                    holder.mealCounterTV.setTextColor(Color.BLUE);
+                }
+                else if((Integer.parseInt(quantityList.get(position)))==0){
+                    holder.mealCounterTV.setTextColor(Color.RED);
+                }
                 //notifyDataSetChanged();
             }
         });
@@ -88,6 +101,12 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                 count++;
                 quantityList.set(position, String.valueOf(count));
                 holder.mealCounterTV.setText(quantityList.get(position));
+                if((Integer.parseInt(quantityList.get(position))>0)){
+                    holder.mealCounterTV.setTextColor(Color.BLUE);
+                }
+                else if((Integer.parseInt(quantityList.get(position)))==0){
+                    holder.mealCounterTV.setTextColor(Color.RED);
+                }
                 //notifyDataSetChanged();
             }
         });

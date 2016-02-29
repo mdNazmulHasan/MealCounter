@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Meal Counter</string>
+    <string name="app_name">Meal Management Application</string>
     <string name="day">Day</string>
     <string name="date">Date</string>
     <string name="rate">Rate</string>

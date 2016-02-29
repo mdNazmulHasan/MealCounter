@@ -55,6 +55,7 @@ public class ReportActivity extends AppCompatActivity {
     String deviceCurrentDateTime;
     String totalOfficePayable;
     ListView reportList;
+    String token;
     private static Font catFont = new Font(Font.FontFamily.COURIER, 20,
             Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.COURIER, 16,
@@ -66,6 +67,7 @@ public class ReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_report);
+        token=getIntent().getStringExtra("Token");
         initialize();
     }
 
@@ -82,6 +84,7 @@ public class ReportActivity extends AppCompatActivity {
             case R.id.mealSubmissionScreen:
                 Intent goToMealSubmissionScreenIntent = new Intent(getApplicationContext(),
                         MealSubmissionActivity.class);
+                goToMealSubmissionScreenIntent.putExtra("Token",token);
                 startActivity(goToMealSubmissionScreenIntent);
                 return true;
             case R.id.emailReport:

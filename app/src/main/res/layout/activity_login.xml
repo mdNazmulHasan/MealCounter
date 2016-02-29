@@ -14,6 +14,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="40sp"
+        android:textColor="@color/colorPrimary"
         android:text="Welcome"/>
 
     <EditText
@@ -33,6 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="login"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
         android:onClick="login"
         android:id="@+id/loginBtn"/>
 

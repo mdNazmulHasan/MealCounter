@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,18 +46,18 @@ public class MealSubmissionActivity extends AppCompatActivity {
     String urltoGetDateAndRate;
     String urlToSubmitData;
     String token;
+    Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_submission);
-        token=getIntent().getStringExtra("Token");
-        Toast.makeText(getApplication(),token,Toast.LENGTH_LONG).show();
+        token = getIntent().getStringExtra("Token");
+        //Toast.makeText(getApplication(),token,Toast.LENGTH_LONG).show();
         initialize();
         getDateAndRate();
         getAllEmployees();
     }
-
 
 
     @Override
@@ -72,6 +73,7 @@ public class MealSubmissionActivity extends AppCompatActivity {
             case R.id.report:
                 Intent reportIntent = new Intent(getApplicationContext(),
                         ReportActivity.class);
+                reportIntent.putExtra("Token", token);
                 startActivity(reportIntent);
                 return true;
             case R.id.reload:
@@ -100,11 +102,16 @@ public class MealSubmissionActivity extends AppCompatActivity {
                         idList.add(employeeId);
                         employeeNameList.add(employeeName);
                         quantityList.add(quantity);
+                        int updateCheckValue= Integer.parseInt(quantityList.get(i));
+                        if(updateCheckValue>0){
+                            submitBtn.setText("Update");
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList,quantityList,getBaseContext());
+
+                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList, quantityList, getBaseContext());
                 mealSubmissionLV.setAdapter(adapterForMealSubmission);
 
             }
@@ -128,20 +135,7 @@ public class MealSubmissionActivity extends AppCompatActivity {
         dateTV = (TextView) findViewById(R.id.dateTV);
         rateTV = (TextView) findViewById(R.id.rateTV);
         mealSubmissionLV = (ListView) findViewById(R.id.mealSubmissionLV);
-        /*countervalueList = new ArrayList<>();
-        View parentView = null;
-        for (int i = 0; i < mealSubmissionLV.getCount(); i++) {
-            parentView = getViewByPosition(i, mealSubmissionLV);
-            TextView mealCounterTV  = ((TextView) parentView
-                    .findViewById(R.id.counterTV));
-            Button deleteBtn  = (Button) parentView
-                    .findViewById(R.id.minus_btn);
-            Button addBtn  = (Button) parentView
-                    .findViewById(R.id.add_btn);
-
-
-        }*/
-
+        submitBtn= (Button) findViewById(R.id.submitBtn);
     }
 
     public String dateFormatter(String date) {
