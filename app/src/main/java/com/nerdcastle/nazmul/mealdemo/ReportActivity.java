@@ -220,16 +220,17 @@ public class ReportActivity extends AppCompatActivity {
 
     public void createPdf(View view) {
         generatePdf();
+        Toast.makeText(getBaseContext(),"Saved Successfully",Toast.LENGTH_LONG).show();
     }
 
     private void generatePdf() {
         try {
             Document document = new Document();
-            String root = Environment.getExternalStorageDirectory().toString();
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
             deviceCurrentDateTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-            File myDir = new File(root + "/MealManagementApp");
+            File myDir = new File(root + "/MealManagementAppLication");
             myDir.mkdirs();
-            String fileName = "Monthly Report of " + monthSelected + "_" + deviceCurrentDateTime + ".pdf";
+            String fileName = "MonthlyReportof" + monthSelected +".pdf";
             File file = new File(myDir, fileName);
             PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
