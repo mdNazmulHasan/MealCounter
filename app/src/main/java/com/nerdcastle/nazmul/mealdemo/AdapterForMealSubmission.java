@@ -15,8 +15,9 @@ import java.util.ArrayList;
  * Created by Nazmul on 2/22/2016.
  */
 public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> employeeNameList = new ArrayList<String>();
-    private ArrayList<String> quantityList = new ArrayList<String>();
+    private ArrayList<String> employeeNameList;
+    private ArrayList<String> quantityList;
+    private ArrayList<String> numberList;
     private Context context;
     int count = 0;
 
@@ -39,7 +40,7 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
 
     @Override
     public long getItemId(int pos) {
-        return 0;
+        return pos;
     }
 
     private static class ViewHolder {
@@ -51,6 +52,7 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        numberList=new ArrayList<>();
         View view = convertView;
         final ViewHolder holder;
         if (view == null) {
@@ -73,8 +75,9 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                 count = Integer.parseInt(holder.mealCounterTV.getText().toString());
                 if (count > 0) {
                     count--;
+                    quantityList.set(position, String.valueOf(count));
                 }
-                holder.mealCounterTV.setText(String.valueOf(count));
+                holder.mealCounterTV.setText(quantityList.get(position));
                 //notifyDataSetChanged();
             }
         });
@@ -83,7 +86,8 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
             public void onClick(View v) {
                 count = Integer.parseInt(holder.mealCounterTV.getText().toString());
                 count++;
-                holder.mealCounterTV.setText(String.valueOf(count));
+                quantityList.set(position, String.valueOf(count));
+                holder.mealCounterTV.setText(quantityList.get(position));
                 //notifyDataSetChanged();
             }
         });

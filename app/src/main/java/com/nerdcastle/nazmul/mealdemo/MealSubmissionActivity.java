@@ -75,9 +75,8 @@ public class MealSubmissionActivity extends AppCompatActivity {
                 startActivity(reportIntent);
                 return true;
             case R.id.reload:
-                Intent reloadIntent = new Intent(getApplicationContext(),
-                        MealSubmissionActivity.class);
-                startActivity(reloadIntent);
+                getDateAndRate();
+                getAllEmployees();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -129,6 +128,20 @@ public class MealSubmissionActivity extends AppCompatActivity {
         dateTV = (TextView) findViewById(R.id.dateTV);
         rateTV = (TextView) findViewById(R.id.rateTV);
         mealSubmissionLV = (ListView) findViewById(R.id.mealSubmissionLV);
+        /*countervalueList = new ArrayList<>();
+        View parentView = null;
+        for (int i = 0; i < mealSubmissionLV.getCount(); i++) {
+            parentView = getViewByPosition(i, mealSubmissionLV);
+            TextView mealCounterTV  = ((TextView) parentView
+                    .findViewById(R.id.counterTV));
+            Button deleteBtn  = (Button) parentView
+                    .findViewById(R.id.minus_btn);
+            Button addBtn  = (Button) parentView
+                    .findViewById(R.id.add_btn);
+
+
+        }*/
+
     }
 
     public String dateFormatter(String date) {
