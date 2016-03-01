@@ -52,6 +52,8 @@ public class ReportActivity extends AppCompatActivity {
     String totalOfficePayable;
     ListView reportListView;
     ReportModel reportModel;
+    AdapterForReport adapterForReport;
+    String monthForCheck;
     private ArrayList<ReportModel> reportList;
     String token;
     private static Font catFont = new Font(Font.FontFamily.COURIER, 20,
@@ -136,6 +138,12 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
         spinnerYear.setAdapter(priceadapter);
+        /*spinnerMonth.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapterForReport.clear();
+            }
+        });*/
     }
 
     public void getData(View view) {
@@ -143,11 +151,20 @@ public class ReportActivity extends AppCompatActivity {
         int selectedMonthAmount = spinnerMonth.getSelectedItemPosition() + 1;
         monthSelected = spinnerMonth.getSelectedItem().toString();
         String selectedMonth = String.valueOf(selectedMonthAmount);
-        getTotalAmount(selectedMonth, selectedYear);
-        getReport(selectedMonth, selectedYear);
+
+        if(adapterForReport==null)
+        {
+            getTotalAmount(selectedMonth, selectedYear);
+            getReport(selectedMonth, selectedYear);
+        }else if(!selectedMonth.equals(monthForCheck)){
+            getTotalAmount(selectedMonth, selectedYear);
+            getReport(selectedMonth, selectedYear);
+        }
+
     }
 
     private void getReport(String selectedMonth, String selectedYear) {
+        monthForCheck=selectedMonth;
         reportList=new ArrayList<>();
         String urlToGetTotalAmount = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetMonthlyBill?month=" + selectedMonth + "&year=" + selectedYear;
         JsonArrayRequest requestToGetReport = new JsonArrayRequest(Request.Method.GET, urlToGetTotalAmount, new Response.Listener<JSONArray>() {
@@ -166,7 +183,8 @@ public class ReportActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                AdapterForReport adapterForReport = new AdapterForReport( reportList,getBaseContext());
+
+                adapterForReport = new AdapterForReport( reportList,getBaseContext());
                 reportListView.setAdapter(adapterForReport);
                 //Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
             }
@@ -187,6 +205,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void getTotalAmount(String selectedMonth, String selectedYear) {
+
         String urlToGetTotalAmount = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetMonthlyTotalOfficeAmount?month=" + selectedMonth + "&year=" + selectedYear;
         StringRequest requestToGetTotalAmount = new StringRequest(Request.Method.GET, urlToGetTotalAmount, new Response.Listener<String>() {
             @Override

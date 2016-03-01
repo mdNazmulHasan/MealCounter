@@ -50,6 +50,7 @@ public class AdapterForReport extends ArrayAdapter<ReportModel> {
         holder.selfAmountTV.setText(reportList.get(position).getSelfAmount());
         holder.totalTV.setText(reportList.get(position).getTotal());
         holder.officeAmountTV.setText(reportList.get(position).getOfficeAmount());
+        notifyDataSetChanged();
         return view;
     }
 
