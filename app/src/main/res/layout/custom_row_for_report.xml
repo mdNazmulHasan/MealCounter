@@ -7,12 +7,18 @@
     <TextView
         android:id="@+id/nameTV"
         android:layout_width="0dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/name" />
     <TextView
         android:id="@+id/totalTV"
         android:layout_width="0dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:paddingLeft="10dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -21,6 +27,9 @@
     <TextView
         android:id="@+id/selfAmountTV"
         android:layout_width="0dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/self_amount" />
@@ -28,6 +37,9 @@
     <TextView
         android:id="@+id/officeAmountTV"
         android:layout_width="0dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/office_amount" />

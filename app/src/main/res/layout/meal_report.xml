@@ -19,6 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:text="@string/month" />
 
@@ -27,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight=".8"
-            android:background="#0cf270"></Spinner>
+            android:background="@color/colorPrimary"></Spinner>
 
         <Button
             android:layout_width="0dp"
@@ -39,18 +40,19 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:background="@color/colorPrimary"
-            android:gravity="left"
+            android:gravity="center"
             android:text="@string/sync" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:layout_marginTop="8dp"
         android:layout_height="0dp">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:text="@string/year" />
 
@@ -59,7 +61,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight=".8"
-            android:background="#0cf270"></Spinner>
+            android:background="@color/colorPrimary"></Spinner>
         <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -73,6 +75,7 @@
         <TextView
             android:id="@+id/nameTV"
             android:layout_width="0dp"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="#000000"
@@ -81,6 +84,7 @@
             android:id="@+id/totalTV"
             android:layout_width="0dp"
             android:paddingLeft="10dp"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -89,6 +93,7 @@
         <TextView
             android:id="@+id/selfAmountTV"
             android:layout_width="0dp"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -97,6 +102,7 @@
         <TextView
             android:id="@+id/officeAmountTV"
             android:layout_width="0dp"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -126,8 +132,11 @@
             android:layout_width="0dp"
             android:id="@+id/totalAmountTV"
             android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:paddingLeft="15dp"
             android:text="@string/total_office_payable"
-            android:layout_gravity="right"
+            android:layout_gravity="center"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

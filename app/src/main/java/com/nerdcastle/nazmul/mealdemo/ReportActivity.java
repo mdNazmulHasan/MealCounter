@@ -47,14 +47,12 @@ public class ReportActivity extends AppCompatActivity {
     Spinner spinnerMonth;
     Spinner spinnerYear;
     TextView totalAmountTV;
-    ArrayList<String> nameList;
-    ArrayList<String> selfAmountList;
-    ArrayList<String> officeAmountList;
-    ArrayList<String> totalAmountList;
     String monthSelected;
     String deviceCurrentDateTime;
     String totalOfficePayable;
-    ListView reportList;
+    ListView reportListView;
+    ReportModel reportModel;
+    private ArrayList<ReportModel> reportList;
     String token;
     private static Font catFont = new Font(Font.FontFamily.COURIER, 20,
             Font.BOLD);
@@ -112,12 +110,12 @@ public class ReportActivity extends AppCompatActivity {
 
     public void initialize() {
         totalAmountTV = (TextView) findViewById(R.id.totalAmountTV);
-        reportList = (ListView) findViewById(R.id.totalReportListView);
+        reportListView = (ListView) findViewById(R.id.totalReportListView);
         final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         final int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
         spinnerMonth = (Spinner) findViewById(R.id.monthSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getBaseContext(), R.array.month, android.R.layout.simple_spinner_item);
+                getBaseContext(), R.array.month, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.post(new Runnable() {
             @Override
@@ -129,7 +127,7 @@ public class ReportActivity extends AppCompatActivity {
         spinnerMonth.setAdapter(adapter);
         spinnerYear = (Spinner) findViewById(R.id.yearSpinner);
         ArrayAdapter<CharSequence> priceadapter = ArrayAdapter.createFromResource(
-                getBaseContext(), R.array.year, android.R.layout.simple_spinner_item);
+                getBaseContext(), R.array.year, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYear.post(new Runnable() {
             @Override
@@ -150,10 +148,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void getReport(String selectedMonth, String selectedYear) {
-        nameList = new ArrayList<>();
-        selfAmountList = new ArrayList<>();
-        officeAmountList = new ArrayList<>();
-        totalAmountList = new ArrayList<>();
+        reportList=new ArrayList<>();
         String urlToGetTotalAmount = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetMonthlyBill?month=" + selectedMonth + "&year=" + selectedYear;
         JsonArrayRequest requestToGetReport = new JsonArrayRequest(Request.Method.GET, urlToGetTotalAmount, new Response.Listener<JSONArray>() {
             @Override
@@ -164,18 +159,15 @@ public class ReportActivity extends AppCompatActivity {
                         String total = response.getJSONObject(i).getString("TotalAmount");
                         String selfAmount = response.getJSONObject(i).getString("SelfAmount");
                         String officeAmount = response.getJSONObject(i).getString("OfficeAmount");
-                        nameList.add(name);
-                        totalAmountList.add(total);
-                        selfAmountList.add(selfAmount);
-                        officeAmountList.add(officeAmount);
+                        reportModel=new ReportModel(name,total,selfAmount,officeAmount);
+                        reportList.add(reportModel);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-                AdapterForReport adapterForReport = new AdapterForReport(nameList, totalAmountList, selfAmountList, officeAmountList, getBaseContext());
-                reportList.setAdapter(adapterForReport);
+                AdapterForReport adapterForReport = new AdapterForReport( reportList,getBaseContext());
+                reportListView.setAdapter(adapterForReport);
                 //Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
@@ -235,7 +227,7 @@ public class ReportActivity extends AppCompatActivity {
             PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
             addMetaData(document);
-            addTitlePage(document, deviceCurrentDateTime, totalOfficePayable, monthSelected, nameList, totalAmountList, selfAmountList, officeAmountList);
+            addTitlePage(document, deviceCurrentDateTime, totalOfficePayable, monthSelected, reportList);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -250,13 +242,13 @@ public class ReportActivity extends AppCompatActivity {
         document.addCreator("Nazmul Hasan");
     }
 
-    private static void addTitlePage(Document document, String deviceCurrentDateTime, String totalOfficePayable, String mnthSelected, ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList)
+    private static void addTitlePage(Document document, String deviceCurrentDateTime, String totalOfficePayable, String mnthSelected, ArrayList<ReportModel> reportList)
             throws DocumentException {
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
         preface.add(new Paragraph("Monthly Report Of " + mnthSelected, catFont));
         addEmptyLine(preface, 1);
-        createTable(preface, nameList, totalAmountList, selfAmountList, officeAmountList);
+        createTable(preface, reportList);
         addEmptyLine(preface, 3);
         Paragraph paragraph = new Paragraph("Total Office Payable(BDT) " + totalOfficePayable,
                 smallBold);
@@ -268,7 +260,7 @@ public class ReportActivity extends AppCompatActivity {
         document.add(preface);
     }
 
-    private static void createTable(Paragraph preface, ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList)
+    private static void createTable(Paragraph preface, ArrayList<ReportModel> reportList)
             throws BadElementException {
         PdfPTable table = new PdfPTable(4);
         PdfPCell cell = new PdfPCell(new Phrase("Employee Name"));
@@ -286,11 +278,11 @@ public class ReportActivity extends AppCompatActivity {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
         table.setHeaderRows(1);
-        for (int i = 0; i < nameList.size(); i++) {
-            table.addCell(nameList.get(i));
-            table.addCell(totalAmountList.get(i));
-            table.addCell(selfAmountList.get(i));
-            table.addCell(officeAmountList.get(i));
+        for (int i = 0; i < reportList.size(); i++) {
+            table.addCell(reportList.get(i).getName());
+            table.addCell(reportList.get(i).getTotal());
+            table.addCell(reportList.get(i).getSelfAmount());
+            table.addCell(reportList.get(i).getOfficeAmount());
         }
         preface.add(table);
     }

@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,35 +12,14 @@ import java.util.ArrayList;
 /**
  * Created by Nazmul on 2/22/2016.
  */
-public class AdapterForReport extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> nameList = new ArrayList<String>();
-    private ArrayList<String> selfAmountList = new ArrayList<String>();
-    private ArrayList<String> officeAmountList = new ArrayList<String>();
-    private ArrayList<String> totalAmountList = new ArrayList<String>();
+public class AdapterForReport extends ArrayAdapter<ReportModel> {
+    private ArrayList<ReportModel> reportList;
     private Context context;
 
-
-    public AdapterForReport(ArrayList<String> nameList, ArrayList<String> totalAmountList, ArrayList<String> selfAmountList, ArrayList<String> officeAmountList, Context context) {
-        this.nameList = nameList;
-        this.selfAmountList = selfAmountList;
-        this.officeAmountList = officeAmountList;
-        this.totalAmountList = totalAmountList;
-        this.context = context;
-    }
-
-    @Override
-    public int getCount() {
-        return officeAmountList.size();
-    }
-
-    @Override
-    public Object getItem(int pos) {
-        return officeAmountList.get(pos);
-    }
-
-    @Override
-    public long getItemId(int pos) {
-        return 0;
+    public AdapterForReport(ArrayList<ReportModel> reportList, Context context) {
+        super(context, R.layout.custom_row_for_report,reportList);
+        this.reportList=reportList;
+        this.context=context;
     }
 
     private static class ViewHolder {
@@ -57,9 +35,8 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
         ViewHolder holder;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_row_for_report, null);
+            view = inflater.inflate(R.layout.custom_row_for_report,null);
             holder = new ViewHolder();
-
             holder.nameTV = (TextView) view.findViewById(R.id.nameTV);
             holder.selfAmountTV = (TextView) view.findViewById(R.id.selfAmountTV);
             holder.officeAmountTV = (TextView) view.findViewById(R.id.officeAmountTV);
@@ -69,10 +46,11 @@ public class AdapterForReport extends BaseAdapter implements ListAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.nameTV.setText(nameList.get(position));
-        holder.selfAmountTV.setText(selfAmountList.get(position));
-        holder.totalTV.setText(totalAmountList.get(position));
-        holder.officeAmountTV.setText(officeAmountList.get(position));
+        holder.nameTV.setText(reportList.get(position).getName());
+        holder.selfAmountTV.setText(reportList.get(position).getSelfAmount());
+        holder.totalTV.setText(reportList.get(position).getTotal());
+        holder.officeAmountTV.setText(reportList.get(position).getOfficeAmount());
         return view;
     }
+
 }
