@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import java.util.Calendar;
  */
 public class ReportActivity extends AppCompatActivity {
     Spinner spinnerMonth;
+    Button pdfBtn;
     Spinner spinnerYear;
     TextView totalAmountTV;
     String monthSelected;
@@ -111,6 +113,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void initialize() {
+        pdfBtn= (Button) findViewById(R.id.pdfBtn);
         totalAmountTV = (TextView) findViewById(R.id.totalAmountTV);
         reportListView = (ListView) findViewById(R.id.totalReportListView);
         final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -138,12 +141,6 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
         spinnerYear.setAdapter(priceadapter);
-        /*spinnerMonth.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapterForReport.clear();
-            }
-        });*/
     }
 
     public void getData(View view) {
@@ -211,6 +208,8 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 totalOfficePayable = response;
+                totalAmountTV.setVisibility(View.VISIBLE);
+                pdfBtn.setVisibility(View.VISIBLE);
                 totalAmountTV.setText("Total Office Payable " + response + " tk");
             }
         }, new Response.ErrorListener() {

@@ -20,7 +20,7 @@
             android:id="@+id/dayTV"
             android:textColor="#000000"
             android:textStyle="bold"
-            android:layout_weight="1.1"
+            android:layout_weight="1.5"
             android:text="@string/day"/>
         <TextView
             android:layout_width="0dp"
@@ -45,16 +45,32 @@
         android:layout_height="0dp"
         android:layout_weight="15"
         android:id="@+id/mealSubmissionLV"></ListView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_weight=".3"
-        android:onClick="submit"
-        android:textStyle="bold"
-        android:id="@+id/submitBtn"
-        android:textColor="#ffffff"
-        android:background="@color/colorPrimary"
-        android:layout_gravity="bottom|center"
-        android:text="@string/submit"/>
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="submit"
+            android:textStyle="bold"
+            android:id="@+id/submitBtn"
+            android:textColor="#ffffff"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="bottom|center"
+            android:text="@string/submit"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/totalMealNumberTV"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:text=""/>
+    </LinearLayout>
+
+
 </LinearLayout>

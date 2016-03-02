@@ -47,14 +47,17 @@ public class MealSubmissionActivity extends AppCompatActivity {
     String urlToSubmitData;
     String token;
     Button submitBtn;
+    TextView totalMealNumberTV;
+    int totalMeal=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_submission);
         token = getIntent().getStringExtra("Token");
-        //Toast.makeText(getApplication(),token,Toast.LENGTH_LONG).show();
+
         initialize();
+
         getDateAndRate();
         getAllEmployees();
     }
@@ -111,8 +114,11 @@ public class MealSubmissionActivity extends AppCompatActivity {
                     }
                 }
 
-                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList, quantityList, getBaseContext());
+                AdapterForMealSubmission adapterForMealSubmission = new AdapterForMealSubmission(employeeNameList, quantityList, MealSubmissionActivity.this);
                 mealSubmissionLV.setAdapter(adapterForMealSubmission);
+
+                setTotalMeal();
+
 
             }
         }, new Response.ErrorListener() {
@@ -130,12 +136,22 @@ public class MealSubmissionActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(requestToGetAllEmployees);
     }
 
+    public void setTotalMeal() {
+        totalMeal=0;
+        countervalueList = getAllValues();
+        for(int i=0;i<countervalueList.size();i++){
+            totalMeal=totalMeal+Integer.parseInt(countervalueList.get(i));
+        }
+        totalMealNumberTV.setText("Total Meal: " + String.valueOf(totalMeal));
+    }
+
     private void initialize() {
         dayTV = (TextView) findViewById(R.id.dayTV);
         dateTV = (TextView) findViewById(R.id.dateTV);
         rateTV = (TextView) findViewById(R.id.rateTV);
         mealSubmissionLV = (ListView) findViewById(R.id.mealSubmissionLV);
         submitBtn= (Button) findViewById(R.id.submitBtn);
+        totalMealNumberTV= (TextView) findViewById(R.id.totalMealNumberTV);
     }
 
     public String dateFormatter(String date) {

@@ -91,7 +91,10 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                 else if((Integer.parseInt(quantityList.get(position)))==0){
                     holder.mealCounterTV.setTextColor(Color.RED);
                 }
-                //notifyDataSetChanged();
+                notifyDataSetChanged();
+                if(context instanceof MealSubmissionActivity){
+                    ((MealSubmissionActivity)context).setTotalMeal();
+                }
             }
         });
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +110,10 @@ public class AdapterForMealSubmission extends BaseAdapter implements ListAdapter
                 else if((Integer.parseInt(quantityList.get(position)))==0){
                     holder.mealCounterTV.setTextColor(Color.RED);
                 }
-                //notifyDataSetChanged();
+                notifyDataSetChanged();
+                if(context instanceof MealSubmissionActivity){
+                    ((MealSubmissionActivity)context).setTotalMeal();
+                }
             }
         });
 
