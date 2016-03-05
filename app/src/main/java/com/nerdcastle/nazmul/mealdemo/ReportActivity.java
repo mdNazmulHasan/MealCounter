@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -160,7 +161,7 @@ public class ReportActivity extends AppCompatActivity {
 
     }
 
-    private void getReport(String selectedMonth, String selectedYear) {
+    private void getReport(final String selectedMonth, final String selectedYear) {
         monthForCheck=selectedMonth;
         reportList=new ArrayList<>();
         String urlToGetTotalAmount = "http://dotnet.nerdcastlebd.com/meal/api/meal/GetMonthlyBill?month=" + selectedMonth + "&year=" + selectedYear;
@@ -173,7 +174,8 @@ public class ReportActivity extends AppCompatActivity {
                         String total = response.getJSONObject(i).getString("TotalAmount");
                         String selfAmount = response.getJSONObject(i).getString("SelfAmount");
                         String officeAmount = response.getJSONObject(i).getString("OfficeAmount");
-                        reportModel=new ReportModel(name,total,selfAmount,officeAmount);
+                        String employeeID = response.getJSONObject(i).getString("EmployeeId");
+                        reportModel=new ReportModel(name,total,selfAmount,officeAmount,employeeID);
                         reportList.add(reportModel);
 
                     } catch (JSONException e) {
@@ -183,7 +185,21 @@ public class ReportActivity extends AppCompatActivity {
 
                 adapterForReport = new AdapterForReport( reportList,getBaseContext());
                 reportListView.setAdapter(adapterForReport);
-                //Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
+                reportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String employeeId=reportList.get(position).getEmployeeId();
+                        String name=reportList.get(position).getName();
+                        Intent detailsReportIntent=new Intent(getApplicationContext(),DetailsReportActivity.class);
+                        detailsReportIntent.putExtra("EmployeeId",employeeId);
+                        detailsReportIntent.putExtra("Name",name);
+                        detailsReportIntent.putExtra("Month",selectedMonth);
+                        detailsReportIntent.putExtra("Year",selectedYear);
+                        detailsReportIntent.putExtra("token",token);
+                        startActivity(detailsReportIntent);
+                    }
+                });
+
             }
         }, new Response.ErrorListener() {
             @Override

@@ -8,6 +8,23 @@ public class ReportModel {
     String total;
     String selfAmount;
     String officeAmount;
+    String employeeId;
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public ReportModel(String name, String total, String selfAmount, String officeAmount, String employeeId) {
+        this.name = name;
+        this.total = total;
+        this.selfAmount = selfAmount;
+        this.officeAmount = officeAmount;
+        this.employeeId = employeeId;
+    }
 
     public ReportModel(String name, String total, String selfAmount, String officeAmount) {
         this.name = name;

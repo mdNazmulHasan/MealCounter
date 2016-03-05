@@ -81,14 +81,14 @@
             android:textStyle="bold"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimary"
             android:text="@string/name" />
         <TextView
             android:id="@+id/totalTV"
             android:layout_width="0dp"
             android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/total_amount" />
@@ -97,7 +97,7 @@
             android:id="@+id/selfAmountTV"
             android:layout_width="0dp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/self_amount" />
@@ -106,7 +106,7 @@
             android:id="@+id/officeAmountTV"
             android:layout_width="0dp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/office_amount" />
