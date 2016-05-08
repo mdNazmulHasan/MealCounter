@@ -18,6 +18,7 @@
     <string name="total_office_payable">total amount</string>
     <string name="report">Report</string>
     <string name="reload">Reload</string>
+    <string name="login">login</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>
